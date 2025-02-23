@@ -14,7 +14,7 @@ export class MongoWrapper {
         log("success");
       })
       .catch(() => {
-        throw "lol";
+        throw "Error connecting to DB";
       });
   }
 
