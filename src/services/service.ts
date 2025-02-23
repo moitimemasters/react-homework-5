@@ -9,8 +9,15 @@ import {
   ValidationError,
 } from "../errors/errors";
 import { UpdateProduct, validateProduct } from "../models/product";
-import { TupleType } from "typescript";
 
+/**
+* An `injectable`, `singleton` class that encapsulates all the buisness logic from routing.
+Thus, routes are left declarative, while all the _"dirty"_ work is done in this class such as:
++ Error handling
++ Calling to repository
++ Extracting request data (params, query, body)
++ Validating incoming requests
+*/
 @singleton()
 export class Service {
   private exceptionHandler: ExceptionHandler = new ExceptionHandler();

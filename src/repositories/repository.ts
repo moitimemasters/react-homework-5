@@ -5,6 +5,10 @@ import { Collection, ObjectId } from "mongodb";
 import { MongoWrapper } from "../lifespan";
 import { Product, UpdateProduct } from "../models/product";
 
+/**
+* An `injectable`, `singleton` class wich encapsulates all the work with database.
+Currently is is implementing interfacing with mongo
+*/
 @singleton()
 export class Repository {
   private categoryCollection: Collection<Category>;
