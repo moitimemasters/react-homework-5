@@ -2,8 +2,8 @@ import { ValidationError } from "../errors/errors";
 
 export interface Product {
   name: String;
-  description?: String;
-  categoryId?: String;
+  description?: String | null;
+  categoryId?: String | null;
   quantity: Number;
   price: Number;
 }
@@ -37,13 +37,22 @@ export const validateProduct = (obj: object): Product => {
     throw new ValidationError("Validation Error", { violdations: violations });
   }
 
+  let description = null;
+  if ("description" in obj && typeof obj.description === "string") {
+    description = obj.description;
+  }
+
+  let categoryId = null;
+
+  if ("categoryId" in obj && typeof obj.categoryId === "string") {
+    categoryId = obj.categoryId;
+  }
+
   return {
     // @ts-ignore
     name: obj.name as string,
-    // @ts-ignore
-    description: (obj.description as string) || "",
-    // @ts-ignore
-    categoryId: (obj.categoryId as string) || "",
+    description: description || "",
+    categoryId: categoryId || "",
     // @ts-ignore
     quantitiy: obj.quantity as number,
     // @ts-ignore
