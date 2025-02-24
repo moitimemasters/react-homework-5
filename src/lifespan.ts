@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { log } from "node:console";
+import { env } from "node:process";
 import { singleton } from "tsyringe";
 
 /**
@@ -14,7 +15,9 @@ export class MongoWrapper {
   private mongoClient: MongoClient;
 
   constructor() {
-    this.mongoClient = new MongoClient("mongodb://127.0.0.1:27017/");
+    this.mongoClient = new MongoClient(
+      env.MONGO_URL || "mongodb://localhost:271017/",
+    );
     this.mongoClient
       .connect()
       .then(() => {

@@ -4,6 +4,7 @@ import { Category } from "../models/category";
 import { Collection, ObjectId } from "mongodb";
 import { MongoWrapper } from "../lifespan";
 import { Product, UpdateProduct } from "../models/product";
+import { ValidationError } from "../errors/errors";
 
 /**
 * An `injectable`, `singleton` class wich encapsulates all the work with database.
@@ -21,7 +22,13 @@ export class Repository {
   }
 
   private makeIdFilter(id: string): { _id: ObjectId } {
-    return { _id: new ObjectId(id) };
+    try {
+      return { _id: new ObjectId(id) };
+    } catch (_) {
+      throw new ValidationError("Validation Error", {
+        context: `Cannot interpret id=${id} as an id of object in Mongo`,
+      });
+    }
   }
 
   async getCategories(): Promise<Array<Category>> {

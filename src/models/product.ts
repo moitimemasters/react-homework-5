@@ -34,7 +34,7 @@ export const validateProduct = (obj: object): Product => {
     violations.push("field `price` should be a number");
   }
   if (violations.length != 0) {
-    throw new ValidationError("Validation Error", { violdations: violations });
+    throw new ValidationError("Validation Error", { violations });
   }
 
   let description = null;
