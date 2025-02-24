@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import { MongoClient } from "mongodb";
 import { log } from "node:console";
 import { env } from "node:process";
@@ -16,7 +17,7 @@ export class MongoWrapper {
 
   constructor() {
     this.mongoClient = new MongoClient(
-      env.MONGO_URL || "mongodb://localhost:271017/",
+      env.MONGO_URL || "mongodb://localhost:27017/",
     );
     this.mongoClient
       .connect()
@@ -36,3 +37,9 @@ export class MongoWrapper {
     await this.mongoClient.close();
   }
 }
+
+export const handleErrorAsync =
+  (func: (req: Request, res: Response) => Promise<void>) =>
+  (req: Request, res: Response, next: NextFunction) => {
+    func(req, res).catch((error) => next(error));
+  };

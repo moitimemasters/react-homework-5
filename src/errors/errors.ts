@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export interface BaseErrorHandler {
   (req: Request, res: Response, exception: Error): void;
@@ -85,26 +85,17 @@ export class ExceptionHandler {
     this.exceptionsMap.set(exceptionClass, errorHandler);
   }
 
-  public async withExcepionHandler(
+  public withExcepionHandler(
+    err: Error,
     req: Request,
     res: Response,
-    runBlock: AsyncRun,
-  ): Promise<void> {
-    try {
-      await runBlock();
-    } catch (e) {
-      if (
-        e instanceof Error &&
-        this.exceptionsMap.has(e.constructor as Class<Error>)
-      ) {
-        // TODO: actually check for all errors in exceptions, then check if
-        // given error COULD be an object of it (isinstance) to catch generic
-        // errors such as `Error`
-        const handler = this.exceptionsMap.get(e.constructor as Class<Error>);
-        if (handler !== undefined) handler(req, res, e);
-      } else {
-        throw e;
-      }
+    _: NextFunction,
+  ) {
+    const handler = this.exceptionsMap.get(err.constructor as Class<Error>);
+    if (handler !== undefined) {
+      handler(req, res, err);
+    } else {
+      res.status(500).send({ context: err });
     }
   }
 }
