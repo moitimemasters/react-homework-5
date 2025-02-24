@@ -4,14 +4,14 @@
 
 _Linux/MacOs_:
 ```bash
-export MONGO_URL= # URL (с кредами, если они есть) до монго: mongodb//localhost:127017/
+export MONGO_URL= # URL (с кредами, если они есть) до монго: mongodb//localhost:27017/
 npm i
 npm run start
 ```
 
 _Windows_
 ```cmd
-set MONGO_URL= # URL (с кредами, если они есть) до монго: mongodb//localhost:127017/
+set MONGO_URL= # URL (с кредами, если они есть) до монго: mongodb//localhost:27017/
 npm i
 npm run start
 ```
